@@ -35,6 +35,7 @@ services:
       - redis
     env_file:
       - ./.envs/.superset.env
+      - ./.envs/.postgis.env
     ports:
       - "8088:8088"
     volumes:

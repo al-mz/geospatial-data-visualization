@@ -49,5 +49,5 @@ echo_step "4" "Complete" "Setting up roles and perms"
 
 # Update database connection URI
 echo_step "6" "Starting" "Updating database connection URI"
-superset set_database_uri -d postgis -u postgresql://postgis:password@db:5432/postgis
+superset set_database_uri -d ${POSTGRES_DB} -u ${DATABASE_URL}
 echo_step "6" "Complete" "Updating database connection URI"
