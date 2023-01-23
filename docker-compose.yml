@@ -1,0 +1,44 @@
+version: "3.9"
+
+volumes:
+  postgis_local_db: {}
+  superset_local_db: {}
+
+services:
+  data_loader:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: geospatial_data_loader
+    volumes:
+      - .:/app/
+    command: >
+      sh -c "tail -f /dev/null"
+  db:
+    image: postgis/postgis
+    container_name: postgis_db
+    volumes:
+      - postgis_local_db/:/var/lib/postgresql/data/:Z
+    ports:
+      - 5430:5432
+    env_file:
+      - ./.envs/.postgis.env
+  redis:
+    image: redis
+    restart: always
+  superset:
+    image: apache/superset
+    container_name: superset
+    restart: always
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./.envs/.superset.env
+      - ./.envs/.postgis.env
+    ports:
+      - "8088:8088"
+    volumes:
+      - superset_local_db:/app/superset_home/
+      - ./config/superset_config.py:/etc/superset/superset_config.py
+      - ./superset-init.sh:/app/superset-init.sh
