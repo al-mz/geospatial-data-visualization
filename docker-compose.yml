@@ -20,7 +20,7 @@ services:
     volumes:
       - postgis_local_db/:/var/lib/postgresql/data/:Z
     ports:
-      - 5430:5432
+      - 5432:5432
     env_file:
       - ./.envs/.postgis.env
   redis:
